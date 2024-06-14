@@ -11,7 +11,7 @@ const Adminorder = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3000/fetchallorder',{
+      const response = await fetch('https://ecommerce-using-mern-0z75.onrender.com/fetchallorder',{
         method:"GET",
         headers:{
           "Content-Type":"application/json"
@@ -40,7 +40,7 @@ const Adminorder = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      await fetch(`http://localhost:3000/orders/${orderId}`, {
+      await fetch(`https://ecommerce-using-mern-0z75.onrender.com/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

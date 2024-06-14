@@ -30,7 +30,7 @@ const Addproduct = () => {
                 formData.append('product',image);
                 // console.log(formData);
 
-                await fetch("http://localhost:3000/upload",{
+                await fetch("https://ecommerce-using-mern-0z75.onrender.com/upload",{
                     method:"POST",
                     body:formData
                 }).then((res)=>res.json()).then((data)=>{responseData=data})
@@ -40,7 +40,7 @@ const Addproduct = () => {
                     product.image=responseData.image_url;
                     console.log(product);
 
-                    await fetch("http://localhost:3000/addproduct",{
+                    await fetch("https://ecommerce-using-mern-0z75.onrender.com/addproduct",{
                         method:"POST",
                         headers: {
                             "Content-Type": "application/json",

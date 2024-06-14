@@ -7,14 +7,14 @@ const ListProduct = () => {
   const [allproduct, setallproduct] = useState([])
 
   const fetchallproduct=async ()=>{
-    await fetch("http://localhost:3000/allproducts").then((res)=>res.json()).then((data)=>setallproduct(data));
+    await fetch("https://ecommerce-using-mern-0z75.onrender.com/allproducts").then((res)=>res.json()).then((data)=>setallproduct(data));
   }
   useEffect(() => {
     fetchallproduct();
   }, [])
 
   const removeProduct= async (id)=>{
-    await fetch("http://localhost:3000/removeproduct",{
+    await fetch("https://ecommerce-using-mern-0z75.onrender.com/removeproduct",{
       method:"POST",
       headers: {
         "Content-Type": "application/json",
