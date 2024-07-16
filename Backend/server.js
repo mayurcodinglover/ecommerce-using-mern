@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const fs = require('fs');
 const { error } = require("console");
 
 
@@ -23,34 +24,75 @@ mongoose.connect(
 );
 console.log("connected");
 
+
+//----------------------Deployment code
+app.use(express.static(path.join(__dirname, '../client')));
+
+// Route to serve index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
+});
+//----------------------Deployment code
+
 //api creation
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+const uploadDir = './upload/images';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Database connection
+mongoose.connect(
+  "mongodb+srv://hedaumayur2003:64fU8a59Na7T6PPQ@cluster0.saixtve.mongodb.net/e-commerce"
+);
+console.log("Connected to MongoDB");
+
+// Deployment code
+app.use(express.static(path.join(__dirname, '../client')));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
 });
 
-//image storage engine
+// Image storage engine
 const storage = multer.diskStorage({
-  destination: "./upload/images",
-  filename: (req, file, cb) => {
-    return cb(
-      null,
-      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
+  destination:'./upload/images',
+  filename:(req,file,cb)=>{
+      return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+  }
 });
 
 const upload = multer({ storage: storage });
+app.use("/images", express.static('upload/images'));
 
-app.use("/images", express.static("upload/images"));
-
-
-//creating upload endpoint for images
-app.post("/upload", upload.single("product"), (req, res) => {
+app.post("/upload", upload.single('product'), (req, res) => {
   res.json({
-    success: true,
-    image_url: `http://localhost:${port}/images/${req.file.filename}`,
-  });
+    success:1,
+    image_url:`http://localhost:${port}/images/${req.file.filename}`
+  })
 });
+
+//image storage engine
+// const storage = multer.diskStorage({
+//   destination: "./upload/images",
+//   filename: (req, file, cb) => {
+//     return cb(
+//       null,
+//       `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+//     );
+//   },
+// });
+
+// const upload = multer({ storage: storage });
+
+// app.use("/images", express.static("upload/images"));
+
+
+// //creating upload endpoint for images
+// app.post("/upload", upload.single("product"), (req, res) => {
+//   res.json({
+//     success: true,
+//     image_url: `http://localhost:${port}/images/${req.file.filename}`,
+//   });
+// });
 
 //schema for creating products
 
